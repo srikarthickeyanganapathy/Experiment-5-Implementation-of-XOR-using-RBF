@@ -1,4 +1,4 @@
-# Experiment-5-Implementation-of-XOR-using-RBF
+# EXPERIMENT 05: IMPLEMENTATION OF XOR USING RBF
 
 ## AIM:
   To classify the Binary input patterns of XOR data  by implementing Radial Basis Function Neural Networks.
@@ -32,22 +32,89 @@ The RBF of hidden neuron as gaussian function
 
 ## ALGORIHM:
 
-/** Write the Algorithm in steps**/
+Step 1 : Initialize the input patterns for XOR Gate.  
+Step 2: Initialize the desired output of the XOR Gate.  
+Step 3: Define the function for RBF and function for prediction.  
+Step 4: Plot the graphs with inputs.  
+Step 5: Find the weights.  
+Step 6: Plot the graph with transformed inputs using RBF.  
+Step 7 : Test for the XOR patterns.
 
 ## PROGRAM:
+```PYTHON
+import numpy as np
+import matplotlib.pyplot as plt
+def gaussian_rbf(x, landmark, gamma=1):
+    return np.exp(-gamma * np.linalg.norm(x - landmark)**2)
+def predict_matrix(point, weights):
+    gaussian_rbf_0 = gaussian_rbf(np.array(point), mu1)
+    gaussian_rbf_1 = gaussian_rbf(np.array(point), mu2)
+    A = np.array([gaussian_rbf_0, gaussian_rbf_1, 1])
+    return np.round(A.dot(weights))
+x1 = np.array([0, 0, 1, 1])
+x2 = np.array([0, 1, 0, 1])
+ys = np.array([0, 1, 1, 0])
 
+plt.figure(figsize=(13, 5))
+plt.subplot(1, 2, 1)
+plt.scatter((x1[0], x1[3]), (x2[0], x2[3]), label="Class_0")
+plt.scatter((x1[1], x1[2]), (x2[1], x2[2]), label="Class_1")
+plt.xlabel("X1")
+plt.ylabel("X2")
+plt.title("Linearly Inseparable")
+plt.legend()
+
+# centers
+mu1 = np.array([0, 1])
+mu2 = np.array([1, 0])
+
+from_1 = [gaussian_rbf(i, mu1) for i in zip(x1, x2)]
+from_2 = [gaussian_rbf(i, mu2) for i in zip(x1, x2)]
+
+A = []
+
+for i, j in zip(from_1, from_2):
+    temp = []
+    temp.append(i)
+    temp.append(j)
+    temp.append(1)
+    A.append(temp)
+    
+A = np.array(A)
+W = np.linalg.inv(A.T.dot(A)).dot(A.T).dot(ys)
+print(np.round(A.dot(W)))
+print(ys)
+print("Weights:",W)
+
+plt.figure(figsize=(13, 5))
+plt.subplot(1, 2, 2)
+plt.scatter(from_1[0], from_2[0], label="Class_0")
+plt.scatter(from_1[1], from_2[1], label="Class_1")
+plt.scatter(from_1[2], from_2[2], label="Class_1")
+plt.scatter(from_1[3], from_2[3], label="Class_0")
+plt.plot([0, 0.95], [0.95, 0])
+plt.annotate("Seperating hyperplane", xy=(0.5, 0.5), xytext=(0.5, 0.5))
+plt.xlabel("µ1")
+plt.ylabel("µ2")
+plt.title("Transformed Inputs")
+plt.legend()
+
+print(f"Input:{np.array([0, 0])}, Predicted: {predict_matrix(np.array([0, 0]), W)}")
+print(f"Input:{np.array([0, 1])}, Predicted: {predict_matrix(np.array([0, 1]), W)}")
+print(f"Input:{np.array([1, 0])}, Predicted: {predict_matrix(np.array([1, 0]), W)}")
+print(f"Input:{np.array([1, 1])}, Predicted: {predict_matrix(np.array([1, 1]), W)}")
+```
 
 
 ## OUTPUT :
-    /**PLOTS of Output in hidden space**/
-    /Classification results
+### Data and Weights:
+![image](https://github.com/Rithigasri/Experiment-5-Implementation-of-XOR-using-RBF/assets/93427256/9d6b4b6d-e1fd-4fe5-84c4-7673a03659f3)
+### Linearly Separable Data:
+![image](https://github.com/Rithigasri/Experiment-5-Implementation-of-XOR-using-RBF/assets/93427256/704a266c-2ae1-45fa-8fcb-74a90ea492d9)
+### Transformed Inputs:
+![image](https://github.com/Rithigasri/Experiment-5-Implementation-of-XOR-using-RBF/assets/93427256/9d9cff7b-03f7-456d-a276-2fa1f12c7b35)
+### Predictions:
+![image](https://github.com/Rithigasri/Experiment-5-Implementation-of-XOR-using-RBF/assets/93427256/1eb02600-e5ae-4712-a8b2-ec3f5ad9a741)
 
 ## RESULT:
-
-
-
-
-
-
-
-
+Thus, Implementation of XOR using RBF is implemented succesfully.
